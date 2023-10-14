@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   resources :ingrediente, only: [:index, :update]
+  get 'disponibilidad_ingredientes' => 'ingrediente#disponibilidad_ingredientes'
+  put 'ingrediente/:ingrediente' => 'ingrediente#update'
 end

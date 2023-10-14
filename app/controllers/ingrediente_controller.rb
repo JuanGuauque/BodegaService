@@ -18,12 +18,29 @@ class IngredienteController < ApplicationController
   end
   
   def update
-    @ingrediente = Ingrediente.find(params[:id])
+    if params[:id].to_i != 0
+      @ingrediente = Ingrediente.find(params[:id])
+    else
+      @ingrediente = Ingrediente.find_by(nombre: params[:id])
+    end
+    
     if @ingrediente.update(ingrediente_params)
       render json: @ingrediente
     else
       render json: @ingrediente.errors, status: :unprocessable_entity
     end
+  end
+
+  def disponibilidad_ingredientes
+    ingredientes_cant = {}
+    params[:ingredientes].split(/\s*,\s*/).each do |ingrediente_name|
+      ingrediente = Ingrediente.find_by(nombre: ingrediente_name.capitalize)
+      ingredientes_cant[ingrediente.nombre] = {
+        cantidad: ingrediente.cantidad
+      }
+    end
+
+    render json: ingredientes_cant
   end
 
   private
